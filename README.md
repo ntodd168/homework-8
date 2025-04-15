@@ -1,2 +1,4 @@
-# homework-8
-C and cpp matrix libraries for cmsc 313
+//Nicholas Todd
+//HW# 8 C vs C++
+//CMSC 313
+//Kidd, section 5
