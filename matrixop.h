@@ -22,8 +22,13 @@ class MatrixOp {
     double data[rows][cols];
     MatrixOp();
 
+    // member functions
+    MatrixOp<rows, cols> operator+(const MatrixOp<rows, cols>& other) const;  // overloaded addition operator
+    MatrixOp<rows, cols> operator-(const MatrixOp<rows, cols>& other) const;  // overloaded subtraction operator
+    MatrixOp<cols, rows> transpose() const;                                   // transpose on self
+
    private:
-    void printMatrix();
+    void printMatrix() const;
 };
 
 #endif MATRIXOP_H

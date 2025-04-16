@@ -9,8 +9,10 @@
 #include <iostream>
 #include <string>
 
-template <size_t r, size_t inner, size_t c>
-MatrixOp<r, c> operator*(const MatrixOp<r, inner>& A, const MatrixOp<inner, c>& B);
+template <size_t rows, size_t inner, size_t cols>
+MatrixOp<rows, cols> operator*(const MatrixOp<rows, inner>& A, const MatrixOp<inner, cols>& B);
+template <size_t rows1, size_t cols1, size_t rows2, size_t cols2>
+bool checkValid(const MatrixOp<rows1, cols1>& mat1, const MatrixOp<rows2, cols2>& mat2, Operation o);
 
 // constructor for the class, creates a zero matrix of <rows,cols>
 template <size_t rows, size_t cols>
@@ -22,25 +24,41 @@ MatrixOp<rows, cols>::MatrixOp() {
     }
 }
 
+/*overloaded + operator. can be used with any size matrices.
+returns the result of matrix addition.
+if the matrices have mismatching dimensions, the function will return a zero matrix.
+*/
 template <size_t rows, size_t cols>
 MatrixOp<rows, cols> MatrixOp<rows, cols>::operator+(const MatrixOp<rows, cols>& other) const {
     MatrixOp<rows, cols> result;
-    for (size_t i = 0; i < rows; ++i)
-        for (size_t j = 0; j < cols; ++j)
-            result.data[i][j] = data[i][j] + other.data[i][j];
+
+    if (checkValid(*this, other, Operation::add)) {
+        for (size_t i = 0; i < rows; ++i)
+            for (size_t j = 0; j < cols; ++j)
+                result.data[i][j] = data[i][j] + other.data[i][j];
+        return result;
+    }
     return result;
 }
 
+/*overloaded - operator. can be used with any size matrices.
+returns the result of matrix subtraction.
+if the matrices have mismatching dimensions, the function will return a zero matrix.
+*/
 template <size_t rows, size_t cols>
 MatrixOp<rows, cols> MatrixOp<rows, cols>::operator-(const MatrixOp<rows, cols>& other) const {
     MatrixOp<rows, cols> result;
-    for (size_t i = 0; i < rows; ++i)
-        for (size_t j = 0; j < cols; ++j)
-            result.data[i][j] = data[i][j] - other.data[i][j];
+
+    if (checkValid(*this, other, Operation::subtract)) {
+        for (size_t i = 0; i < rows; ++i)
+            for (size_t j = 0; j < cols; ++j)
+                result.data[i][j] = data[i][j] - other.data[i][j];
+        return result;
+    }
     return result;
 }
 
-/*overloaded multiplication operator. templated to allow for any dimensions to be passed.
+/*overloaded multiplication operator (not member function of MatrixOp class). templated to allow for any dimensions to be passed.
 rows: the rows of matrix A
 inner: the shared dimension
 cols: the columns of matrix B
@@ -51,7 +69,7 @@ template <size_t rows, size_t inner, size_t cols>
 MatrixOp<rows, cols> operator*(const MatrixOp<rows, inner>& A, const MatrixOp<inner, cols>& B) {
     MatrixOp<rows, cols> result;
 
-    if (checkValid(A<rows, inner>, B<inner, cols>)) {
+    if (checkValid(A, B, Operation::multiply)) {
         for (size_t i = 0; i < rows; ++i) {
             for (size_t j = 0; j < cols; ++j) {
                 result.data[i][j] = 0;
@@ -62,6 +80,18 @@ MatrixOp<rows, cols> operator*(const MatrixOp<rows, inner>& A, const MatrixOp<in
         }
     }
 
+    return result;
+}
+
+// transpose-self function for matrix.
+template <size_t rows, size_t cols>
+MatrixOp<cols, rows> MatrixOp<rows, cols>::transpose() const {
+    MatrixOp<cols, rows> result;
+    for (size_t i = 0; i < rows; ++i) {
+        for (size_t j = 0; j < cols; ++j) {
+            result.data[j][i] = data[i][j];
+        }
+    }
     return result;
 }
 
@@ -86,7 +116,7 @@ bool checkValid(const MatrixOp<rows1, cols1>& mat1, const MatrixOp<rows2, cols2>
     }
 }
 
-// prints the result of the matrix operation
+// prints the calling matrix
 template <size_t rows, size_t cols>
 void MatrixOp<rows, cols>::printMatrix() const {
     std::cout << "[ ";
