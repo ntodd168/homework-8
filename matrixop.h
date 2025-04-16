@@ -13,22 +13,21 @@ using namespace std;
 enum class Operation {
     add,
     subtract,
-    multiply,
-    divide
+    multiply
 };
 
 template <size_t rows, size_t cols>
 class MatrixOp {
    public:
+    double data[rows][cols];
     MatrixOp() {}
-    double addMatrices(double mat1[rows][cols], double mat2[rows][cols]);
-    double subtractMatrices(double mat1[rows][cols], double mat2[rows][cols]);
-    double divideMatrices(double mat1[rows][cols], double mat2[rows][cols]);
-    double multiplyMatrices(double mat1[rows][cols], double mat2[rows][cols]);
+    double addMatrices(double mat1[r1][c1], double mat2[r2][c2]);
+    double subtractMatrices(double mat1[r1][c1], double mat2[r2][c2]);
+    double multiplyMatrices(const MatrixOp<rows1,cols1>& mat1,const MatrixOp<rows2,cols2>& mat2);
 
    private:
-    bool checkValid(double mat1[rows][cols], double mat2[rows][cols], Operation o);
-    void printResult(double mat1[rows][cols]);
+    bool checkValid(double mat1[r1][c1], double mat2[r2][c2], Operation o);
+    void printResult(double mat1[r1][c1]);
 };
 
 #endif MATRIXOP_H
