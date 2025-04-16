@@ -6,14 +6,6 @@
 
 #include <matrixop.h>
 
-#include <iostream>
-#include <string>
-
-template <size_t rows, size_t inner, size_t cols>
-MatrixOp<rows, cols> operator*(const MatrixOp<rows, inner>& A, const MatrixOp<inner, cols>& B);
-template <size_t rows1, size_t cols1, size_t rows2, size_t cols2>
-bool checkValid(const MatrixOp<rows1, cols1>& mat1, const MatrixOp<rows2, cols2>& mat2, Operation o);
-
 // constructor for the class, creates a zero matrix of <rows,cols>
 template <size_t rows, size_t cols>
 MatrixOp<rows, cols>::MatrixOp() {
@@ -99,15 +91,15 @@ MatrixOp<cols, rows> MatrixOp<rows, cols>::transpose() const {
 template <size_t rows1, size_t cols1, size_t rows2, size_t cols2>
 bool checkValid(const MatrixOp<rows1, cols1>& mat1, const MatrixOp<rows2, cols2>& mat2, Operation o) {
     switch (o) {
-        case add:
+        case Operation::add:
             // return false if the dimensions are not equal
             return rows1 == rows2 && cols1 == cols2;
             break;
-        case subtract:
+        case Operation::subtract:
             // return false if the dimensions are not equal
             return rows1 == rows2 && cols1 == cols2;
             break;
-        case multiply:
+        case Operation::multiply:
             // return false if columns of mat1 do not equal rows of mat2
             return cols1 == rows2;
             break;
