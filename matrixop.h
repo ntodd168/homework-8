@@ -26,6 +26,8 @@ class MatrixOp {
     MatrixOp<rows, cols> operator+(const MatrixOp<rows, cols>& other) const;
     // overloaded subtraction operator
     MatrixOp<rows, cols> operator-(const MatrixOp<rows, cols>& other) const;
+    // scalar multiplication
+    MatrixOp<rows, cols> operator*(double scalar) const;
     // transpose on self
     MatrixOp<cols, rows> transpose() const;
     // print self
@@ -44,4 +46,4 @@ bool checkValid(const MatrixOp<rows1, cols1>& mat1, const MatrixOp<rows2, cols2>
 
 #include "matrixop.cpp"
 
-#endif MATRIXOP_H
+#endif //MATRIXOP_H

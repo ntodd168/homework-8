@@ -4,7 +4,10 @@
 // Kidd, section 5
 // implementation file for matrix operations class
 
-#include <matrixop.h>
+#include "matrixop.h"
+
+#include <iomanip>
+#include <iostream>
 
 // constructor for the class, creates a zero matrix of <rows,cols>
 template <size_t rows, size_t cols>
@@ -48,6 +51,17 @@ MatrixOp<rows, cols> MatrixOp<rows, cols>::operator-(const MatrixOp<rows, cols>&
         return result;
     }
     return result;
+}
+
+/*overloaded * operator for scalar multiplication
+****the scalar must be second: i.e. B * 3*/
+template <size_t rows, size_t cols>
+MatrixOp<rows, cols> MatrixOp<rows, cols>::operator*(double scalar) const {
+    MatrixOp<rows, cols> res{};
+    for (size_t i = 0; i < rows; ++i)
+        for (size_t j = 0; j < cols; ++j)
+            res.data[i][j] = data[i][j] * scalar;
+    return res;
 }
 
 /*overloaded multiplication operator (not member function of MatrixOp class). templated to allow for any dimensions to be passed.
@@ -111,12 +125,17 @@ bool checkValid(const MatrixOp<rows1, cols1>& mat1, const MatrixOp<rows2, cols2>
 // prints the calling matrix
 template <size_t rows, size_t cols>
 void MatrixOp<rows, cols>::printMatrix() const {
-    std::cout << "[ ";
+    cout << fixed << setprecision(0);
+    cout << "[ ";
     for (size_t i = 0; i < rows; ++i) {
-        std::cout << "\n";
+        if (i != 0)
+            cout << "\n";
         for (size_t j = 0; j < cols; ++j) {
-            std::cout << data[i][j] << " ";
+            if (j == 0 && i != 0) {
+                cout << "  ";
+            }
+            cout << data[i][j] << " ";
         }
     }
-    std::cout << "\n]";
+    cout << "]\n";
 }
