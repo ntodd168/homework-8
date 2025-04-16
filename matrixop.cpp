@@ -9,9 +9,8 @@
 #include <iostream>
 #include <string>
 
-template <size_t rows1, size_t cols1, size_t rows2, size_t cols2>
-MatrixOp<rows1, cols1> multiplyMatrices(const MatrixOp<rows1, cols1>& mat1,
-                                        const MatrixOp<rows2, cols2>& mat2);
+template <size_t r, size_t inner, size_t c>
+MatrixOp<r, c> operator*(const MatrixOp<r, inner>& A, const MatrixOp<inner, c>& B);
 
 // constructor for the class, creates a zero matrix of <rows,cols>
 template <size_t rows, size_t cols>
@@ -23,52 +22,64 @@ MatrixOp<rows, cols>::MatrixOp() {
     }
 }
 
-// add matrix function, parameter sizes templated to allow for any size matrices
-template <size_t r1, size_t c1, size_t r2, size_t c2>
-double MatrixOp<r1, c1, r2, c2>::addMatrices(double mat1[r1][c1], double mat2[r2][c2]) {}
+template <size_t rows, size_t cols>
+MatrixOp<rows, cols> MatrixOp<rows, cols>::operator+(const MatrixOp<rows, cols>& other) const {
+    MatrixOp<rows, cols> result;
+    for (size_t i = 0; i < rows; ++i)
+        for (size_t j = 0; j < cols; ++j)
+            result.data[i][j] = data[i][j] + other.data[i][j];
+    return result;
+}
 
-// subtract matrix function, parameter sizes templated to allow for any size matrices
-template <size_t r1, size_t c1, size_t r2, size_t c2>
-double MatrixOp<r1, c1, r2, c2>::subtractMatrices(double mat1[r1][c1], double mat2[r2][c2]) {}
+template <size_t rows, size_t cols>
+MatrixOp<rows, cols> MatrixOp<rows, cols>::operator-(const MatrixOp<rows, cols>& other) const {
+    MatrixOp<rows, cols> result;
+    for (size_t i = 0; i < rows; ++i)
+        for (size_t j = 0; j < cols; ++j)
+            result.data[i][j] = data[i][j] - other.data[i][j];
+    return result;
+}
 
-// multiply matrix function, parameter sizes templated to allow for any size matrices
-template <size_t rows1, size_t cols1, size_t rows2, size_t cols2>
-MatrixOp<rows1, cols2> multiplyMatrices(const MatrixOp<rows1, cols1>& mat1, const MatrixOp<rows2, cols2>& mat2) {
-    MatrixOp<rows1, cols2> result;
-    if (checkValid(mat1, mat2, multiply)) {
-        // loop through the rows
-        for (size_t i = 0; i < rows1; ++i) {
-            // thru the cols
-            for (size_t j = 0; j < cols2; ++j) {
+/*overloaded multiplication operator. templated to allow for any dimensions to be passed.
+rows: the rows of matrix A
+inner: the shared dimension
+cols: the columns of matrix B
+-the returned matrix will be rows x cols dimension
+-if inner is not the same value, the function will return a zero matrix
+*/
+template <size_t rows, size_t inner, size_t cols>
+MatrixOp<rows, cols> operator*(const MatrixOp<rows, inner>& A, const MatrixOp<inner, cols>& B) {
+    MatrixOp<rows, cols> result;
+
+    if (checkValid(A<rows, inner>, B<inner, cols>)) {
+        for (size_t i = 0; i < rows; ++i) {
+            for (size_t j = 0; j < cols; ++j) {
                 result.data[i][j] = 0;
-                // thru the shared dimension
-                for (size_t k = 0; k < cols1; ++k) {
-                    result.data[i][j] += mat1.data[i][k] * mat2.data[k][j];
+                for (size_t k = 0; k < inner; ++k) {
+                    result.data[i][j] += A.data[i][k] * B.data[k][j];
                 }
             }
         }
-        return result;
-    } else {
-        // will return empty if not a valid matrix
-        return result
-    };
+    }
+
+    return result;
 }
 
 // function to check if the operation on two matrices is actually valid. uses templated array size values to allow anything to pass. Operation o is one of the enum vals
-template <size_t r1, size_t c1, size_t r2, size_t c2>
-bool MatrixOp<r1, c1, r2, c2>::checkValid(double mat1[r1][c1], double mat2[r2][c2], Operation o) {
+template <size_t rows1, size_t cols1, size_t rows2, size_t cols2>
+bool checkValid(const MatrixOp<rows1, cols1>& mat1, const MatrixOp<rows2, cols2>& mat2, Operation o) {
     switch (o) {
         case add:
             // return false if the dimensions are not equal
-            return r1 == r2 && c1 == c2;
+            return rows1 == rows2 && cols1 == cols2;
             break;
         case subtract:
             // return false if the dimensions are not equal
-            return r1 == r2 && c1 == c2;
+            return rows1 == rows2 && cols1 == cols2;
             break;
         case multiply:
             // return false if columns of mat1 do not equal rows of mat2
-            return c1 == r2;
+            return cols1 == rows2;
             break;
         default:
             return false;
@@ -76,5 +87,14 @@ bool MatrixOp<r1, c1, r2, c2>::checkValid(double mat1[r1][c1], double mat2[r2][c
 }
 
 // prints the result of the matrix operation
-template <size_t r1, size_t c1, size_t r2, size_t c2>
-void MatrixOp<r1, c1, r2, c2>::printResult(double mat1[r1][c1]) {}
+template <size_t rows, size_t cols>
+void MatrixOp<rows, cols>::printMatrix() const {
+    std::cout << "[ ";
+    for (size_t i = 0; i < rows; ++i) {
+        std::cout << "\n";
+        for (size_t j = 0; j < cols; ++j) {
+            std::cout << data[i][j] << " ";
+        }
+    }
+    std::cout << "\n]";
+}
