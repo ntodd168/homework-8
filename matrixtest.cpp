@@ -49,4 +49,6 @@ int main() {
 
     cout << "Matrix D [result of D = A + (B * 3) * C.transpose()]:\n";
     D.printMatrix();
+
+    return 0;
 }
