@@ -1,48 +1,48 @@
-AUTHORING:
-Nicholas Todd
-HW# 8 C vs C++
-CMSC 313
+AUTHORING:<br>
+Nicholas Todd<br>
+HW# 8 C vs C++<br>
+CMSC 313<br>
 Kidd, section 5
 
-PURPOSE OF SOFTWARE:
+PURPOSE OF SOFTWARE:<br>
 These files contain c++ and C libraries that allow for matrix operations to be performed.
 
-================================================================================
+======================================================
 c++ implementation:
 
 FILES:
-matrixop.h - header file
-matrixop.cpp - cpp implementation
-matrixtest.cpp - test code (contains the required matrices with the operations)
+- matrixop.h - header file
+- matrixop.cpp - cpp implementation
+- matrixtest.cpp - test code (contains the required matrices with the operations)
 
 BUILD INSTRUCTIONS for g++:
 1. Contain the above files in the same directory
-2. Enter the following terminal commands:
-g++ -Wall -g matrixtest.cpp -o matrixtest.exe
+2. Enter the following terminal commands:<br>
+g++ -Wall -g matrixtest.cpp -o matrixtest.exe<br>
 ./matrixtest.exe
 
-TESTING METHODOLOGY:
+TESTING METHODOLOGY:<br>
 matrixtest.cpp file used to test the library
 
 NOTES:
 - Functions are templated to allow for any size matrices to be constructed
 - Invalid matrix operations result in a return of a zero matrix
 
-================================================================================
+======================================================
 C implementation:
 
 FILES:
-matrixopC.h - header file
-matrixopC.c - cpp implementation
-matrixtest.c - test code (contains the required matrices with the operations)
+- matrixopC.h - header file
+- matrixopC.c - cpp implementation
+- matrixtest.c - test code (contains the required matrices with the operations)
 
 BUILD INSTRUCTIONS for g++:
 1. Contain the above files in the same directory
-2. Enter the following terminal commands:
-gcc -o matrixtest matrixtest.c matrixopC.c
-matrixtest
+2. Enter the following terminal commands:<br>
+gcc -o matrixtest matrixtest.c matrixopC.c<br>
+matrixtest<br>
 
-TESTING METHODOLOGY:
+TESTING METHODOLOGY:<br>
 matrixtest.cpp file used to test the library
 
 NOTES:
