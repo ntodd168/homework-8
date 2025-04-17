@@ -7,7 +7,7 @@ Kidd, section 5
 PURPOSE OF SOFTWARE:<br>
 These files contain c++ and C libraries that allow for matrix operations to be performed.
 
-======================================================
+======================================================<br>
 c++ implementation:
 
 FILES:
@@ -28,7 +28,7 @@ NOTES:
 - Functions are templated to allow for any size matrices to be constructed
 - Invalid matrix operations result in a return of a zero matrix
 
-======================================================
+======================================================<br>
 C implementation:
 
 FILES:
@@ -43,7 +43,7 @@ gcc -o matrixtest matrixtest.c matrixopC.c<br>
 matrixtest<br>
 
 TESTING METHODOLOGY:<br>
-matrixtest.cpp file used to test the library
+matrixtest.c file used to test the library
 
 NOTES:
 - The C implementation has no templates
