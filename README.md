@@ -36,11 +36,11 @@ FILES:
 - matrixopC.c - cpp implementation
 - matrixtest.c - test code (contains the required matrices with the operations)
 
-BUILD INSTRUCTIONS for g++:
+BUILD INSTRUCTIONS for gcc:
 1. Contain the above files in the same directory
 2. Enter the following terminal commands:<br>
-gcc -o matrixtest matrixtest.c matrixopC.c<br>
-matrixtest<br>
+gcc -std=c99 -O0 -o matrixtest matrixtest.c matrixopC.c<br>
+./matrixtest<br>
 
 TESTING METHODOLOGY:<br>
 matrixtest.c file used to test the library
